@@ -1,0 +1,71 @@
+<?xml version="1.0"?>
+<launch>
+  <arg name="first_tb3"  default="tb3_0"/>
+  <arg name="first_tb3_action" default="Leader"/>
+  <arg name="robot_1_name" default="R1"/>
+  <arg name="robot_1_leader" default="0"/>
+  <arg name="offset_1" default="[0,0,0]"/>
+  
+  <arg name="second_tb3" default="tb3_1"/>
+  <arg name="second_tb3_action" default="Follower"/>
+  <arg name="robot_2_name" default="R2"/>
+  <arg name="robot_2_leader" default="R1"/>
+  <arg name="offset_2" default="[-1,1,0]"/>
+  
+  <arg name="third_tb3"  default="tb3_2"/>
+  <arg name="third_tb3_action" default="Follower"/>
+  <arg name="robot_3_name" default="R3"/>
+  <arg name="robot_3_leader" default="R1"/>
+  <arg name="offset_3" default="[1,1,0]"/>
+  
+  <arg name="fourth_tb3"  default="tb3_3"/>
+  <arg name="fourth_tb3_action" default="Follower"/>
+  <arg name="robot_4_name" default="R4"/>
+  <arg name="robot_4_leader" default="R2"/>
+  <arg name="offset_4" default="[1,1,0]"/>
+  
+  <arg name="first_tb3_x_pos" default="0.0"/>
+  <arg name="first_tb3_y_pos" default="0.0"/>
+  <arg name="first_tb3_z_pos" default=" 0.0"/>
+  <arg name="first_tb3_yaw"   default=" 0"/>
+
+  <arg name="second_tb3_x_pos" default=" 2.0"/>
+  <arg name="second_tb3_y_pos" default="-2.0"/>
+  <arg name="second_tb3_z_pos" default=" 0.0"/>
+  <arg name="second_tb3_yaw"   default=" 0"/>
+
+  <arg name="third_tb3_x_pos" default=" -2.0"/>
+  <arg name="third_tb3_y_pos" default=" -2.0"/>
+  <arg name="third_tb3_z_pos" default=" 0.0"/>
+  <arg name="third_tb3_yaw"   default=" 0.0"/>
+  
+  <arg name="fourth_tb3_x_pos" default=" 0.0"/>
+  <arg name="fourth_tb3_y_pos" default=" -4.0"/>
+  <arg name="fourth_tb3_z_pos" default=" 0.0"/>
+  <arg name="fourth_tb3_yaw"   default=" 0.0"/>
+ 
+
+ <group ns = "$(arg first_tb3)">
+	 <node name="controller_node_1" pkg="robotics_2_project" type="robots_controller.py" args="-x $(arg first_tb3_x_pos) -y $(arg first_tb3_y_pos) -theta $(arg first_tb3_yaw) -topic $(arg first_tb3) -action $(arg first_tb3_action) -name $(arg robot_1_name) -name_leader $(arg robot_1_leader) -offset $(arg offset_1)" output="screen"/>
+  </group>
+ 
+  <group ns = "$(arg second_tb3)">
+ <node name="controller_node_2" pkg="robotics_2_project" type="robots_controller.py" args="-x $(arg second_tb3_x_pos) -y $(arg second_tb3_y_pos) -theta $(arg second_tb3_yaw) -topic $(arg second_tb3) -action $(arg second_tb3_action) -name $(arg robot_2_name) -name_leader $(arg robot_2_leader) -offset $(arg offset_2)" output="screen"/>
+        </group>
+        
+   <group ns = "$(arg third_tb3)">
+ <node name="controller_node_3" pkg="robotics_2_project" type="robots_controller.py" args="-x $(arg third_tb3_x_pos) -y $(arg third_tb3_y_pos) -theta $(arg third_tb3_yaw) -topic $(arg third_tb3) -action $(arg third_tb3_action) -name $(arg robot_3_name) -name_leader $(arg robot_3_leader) -offset $(arg offset_3)" output="screen"/>
+   </group>
+   
+   <group ns = "$(arg fourth_tb3)">
+ <node name="controller_node_4" pkg="robotics_2_project" type="robots_controller.py" args="-x $(arg fourth_tb3_x_pos) -y $(arg fourth_tb3_y_pos) -theta $(arg fourth_tb3_yaw) -topic $(arg fourth_tb3) -action $(arg fourth_tb3_action) -name $(arg robot_4_name) -name_leader $(arg robot_4_leader) -offset $(arg offset_4)" output="screen"/>
+
+  </group>
+
+  <node name="path_node" pkg="robotics_2_project" type="cubicpath_planning.py" output="screen"/>
+ 
+  <node pkg="rosbag" type="record" name="rosbag_record"
+       args="record -o record_test.bag /R1/pose_leader /R2/pose_leader /R3/pose_leader /R4/pose_leader /path_leader /tb3_0/cmd_vel /tb3_1/cmd_vel /tb3_2/cmd_vel /tb3_3/cmd_vel"/>
+ 
+ </launch>
+ 

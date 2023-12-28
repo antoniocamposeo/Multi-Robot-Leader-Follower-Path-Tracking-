@@ -1,0 +1,6 @@
+<?xml version="1.0"?>
+
+<launch>
+   <include file="$(find robotics_2_project)/launch/multi_turtlebot3_project_1.launch"/> 
+</launch>
+
